@@ -30,10 +30,6 @@ export const config = {
    * Site
    */
   datasite: {
-    amount: {
-      minAmount: Number(process.env.MIN_AMOUNT) || 2,
-      maxAmount: Number(process.env.MAX_AMOUNT) || 400,
-    },
     name: process.env.NODE_NAME,
     url: process.env.NODE_APP_URL,
     pricingBilling: Number(process.env.PRICING_BILLING_VOUCHER),
@@ -47,14 +43,14 @@ export const config = {
    * Organization
    */
   organizationAddress: {
-    name: 'UnPot',
-    company: 'Birevo',
-    street1: 'Via della costa 13',
+    name: 'LiveStock MGT',
+    company: 'LiveStock MGT',
+    street1: 'Via santa maria 17',
     street2: '',
     city: 'Vigevano',
-    zip: '20156',
+    zip: '27029',
     country: 'IT',
-    phone: '+393425712192',
+    phone: '+393881155086',
     email: 'info@birevo.com',
   },
   /**
@@ -68,7 +64,13 @@ export const config = {
   /**
    * Server port
    */
-  port: process.env.PORT || 4800,
+  port: process.env.PORT || 5500,
+  /**
+   * Database
+   */
+  database: {
+    url: process.env.DATABASE_URL,
+  },
   /**
    * Show or not console.log
    */
@@ -89,13 +91,6 @@ export const config = {
    */
   implementations: {
     /**
-     * Birevo marketplace
-     */
-    ivemo: {
-      link: process.env.IVEMO_LINK,
-      token: process.env.IVEMO_ACCESS_TOKEN,
-    },
-    /**
      * Stripe
      */
     stripe: {
@@ -108,23 +103,6 @@ export const config = {
     amqp: {
       link: process.env.AMQP_LINK,
     },
-    /**
-     * Ipapi
-     */
-    ipapi: {
-      link: process.env.IPAPI_LINK,
-      apiKey: process.env.IPAPI_KEY,
-    },
-    /**
-     * Ip-api
-     */
-    ip_api: {
-      link: process.env.IP_API_LINK,
-    },
-    /**
-     * Sentry
-     */
-    sentry: process.env.SENTRY_DNS,
     /**
      * Mailtrap
      */

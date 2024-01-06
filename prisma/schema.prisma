@@ -3,7 +3,7 @@
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["metrics", "fullTextSearch"]
+  previewFeatures = ["metrics", "fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -12,27 +12,13 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model Product {
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  deletedAt    DateTime?
-  id           String       @id @default(uuid())
-  name         String       @unique
-  price        Float
-  sale         Boolean      @default(false)
-  availibility Availibility
-  reviews      Review[]
-  tags         Tag[]
-  description  Description?
-}
-
 model User {
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
   deletedAt      DateTime?
-  id             String        @id @default(uuid())
-  email          String        @unique
-  refreshToken   String?
+  id             String         @id @default(uuid())
+  email          String         @unique
+  refreshToken   String[]
   accessToken    String?
   organizationId String?
   password       String?
@@ -42,6 +28,26 @@ model User {
   confirmedAt    DateTime?
   profile        Profile?
   organization   Organization?
+  contributors   Contributor[]
+  authProviders  AuthProvider[]
+}
+
+model Contributor {
+  createdAt      DateTime            @default(now())
+  updatedAt      DateTime            @updatedAt
+  deletedAt      DateTime?
+  id             String              @id @default(uuid())
+  role           RoleContributorRole @default(SUPERADMIN)
+  userId         String
+  user           User                @relation(fields: [userId], references: [id])
+  organizationId String
+  organization   Organization        @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userCreatedId  String
+}
+
+enum RoleContributorRole {
+  SUPERADMIN
+  ADMIN
 }
 
 model Profile {
@@ -63,57 +69,25 @@ model Profile {
 }
 
 model Organization {
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  id        String    @id @default(uuid())
-  name      String?
-  userId    String    @unique
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  deletedAt    DateTime?
+  id           String        @id @default(uuid())
+  name         String?
+  description  String?
+  userId       String        @unique
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  contributors Contributor[]
 }
 
-model ContactUs {
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  deletedAt   DateTime?
-  id          String    @id @default(uuid())
-  fullName    String
-  email       String
-  phone       String?
-  subject     String?
-  description String?
-}
-
-model Description {
-  deletedAt DateTime?
-  id        String    @id @default(uuid())
-  content   String
-  product   Product   @relation(fields: [productId], references: [id])
-  productId String    @unique
-}
-
-model Review {
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  id        Int       @id @default(autoincrement())
-  title     String
-  content   String
-  rating    Int
-  product   Product   @relation(fields: [productId], references: [id])
-  productId String
-}
-
-model Tag {
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  deletedAt DateTime?
-  id        String    @id @default(uuid())
-  content   String
-  products  Product[]
-}
-
-enum Availibility {
-  IN_STORE
-  ONLINE
+model AuthProvider {
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  deletedAt  DateTime?
+  id         String    @id @default(uuid())
+  email      String?
+  name       String?
+  providerId String?
+  userId     String
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

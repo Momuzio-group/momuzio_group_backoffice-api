@@ -3,12 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { config } from './app/config';
 import helmet from 'helmet';
-
-// async function bootstrap() {
-//   const app = await NestFactory.create(AppModule);
-//   await app.listen(4800);
-// }
-// bootstrap();
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   // config.update({});
@@ -20,6 +15,7 @@ async function bootstrap() {
     origin: true,
     credentials: true,
   });
+  app.use(cookieParser());
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
