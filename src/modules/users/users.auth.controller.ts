@@ -33,7 +33,7 @@ export class UsersAuthController {
   /** Post one Users */
   @Post(`/register`)
   async createOne(@Res() res, @Body() body: RegisterUserDto) {
-    const { email, password, firstName, lastName, nameOrganization } = body;
+    const { email, password, firstName, lastName } = body;
 
     const findOneUser = await this.usersService.findOneBy({ email });
     if (findOneUser)
@@ -54,7 +54,7 @@ export class UsersAuthController {
     });
 
     const organization = await this.organizationsService.createOne({
-      name: nameOrganization,
+      name: `${firstName} ${lastName}`,
       userId: user.id,
     });
 

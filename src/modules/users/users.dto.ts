@@ -19,11 +19,6 @@ export class RegisterUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
-  nameOrganization: string;
-
-  @IsNotEmpty()
-  @IsString()
   @IsEmail()
   @MaxLength(50)
   email: string;
