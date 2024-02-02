@@ -5,6 +5,7 @@ import { ContributorsModule } from './modules/contributors/contributors.module';
 import { MembershipsModule } from './modules/memberships/memberships.module';
 import { OrganizationsModule } from './modules/organizations/organizations.module';
 import { ProfilesModule } from './modules/profiles/profiles.module';
+import { SubscribesModule } from './modules/subscribes/subscribes.module';
 import { UsersModule } from './modules/users/users.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { UsersModule } from './modules/users/users.module';
     DatabaseModule,
     ProfilesModule,
     UsersModule,
+    SubscribesModule,
     MembershipsModule,
     ContributorsModule,
     OrganizationsModule,
