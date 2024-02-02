@@ -4,6 +4,8 @@ import { PaginationType } from '../../app/utils/pagination/with-pagination';
 export type GetContributorsSelections = {
   search?: string;
   pagination?: PaginationType;
+  userId?: Contributor['userId'];
+  organizationId?: Contributor['organizationId'];
 };
 
 export type GetOneContributorsSelections = {

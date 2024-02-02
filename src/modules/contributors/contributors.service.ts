@@ -1,4 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { Contributor, Prisma } from '@prisma/client';
+import { DatabaseService } from '../../app/database/database.service';
+import {
+  WithPaginationResponse,
+  withPagination,
+} from '../../app/utils/pagination';
 import {
   CreateContributorsOptions,
   GetContributorsSelections,
@@ -6,12 +12,6 @@ import {
   UpdateContributorsOptions,
   UpdateContributorsSelections,
 } from './contributors.type';
-import { DatabaseService } from '../../app/database/database.service';
-import {
-  WithPaginationResponse,
-  withPagination,
-} from '../../app/utils/pagination';
-import { Contributor, Prisma } from '@prisma/client';
 
 @Injectable()
 export class ContributorsService {
@@ -20,7 +20,15 @@ export class ContributorsService {
     selections: GetContributorsSelections,
   ): Promise<WithPaginationResponse | null> {
     const prismaWhereContributor = {} as Prisma.ContributorWhereInput;
-    const { pagination } = selections;
+    const { pagination, userId, organizationId } = selections;
+
+    if (userId) {
+      Object.assign(prismaWhereContributor, { userId });
+    }
+
+    if (organizationId) {
+      Object.assign(prismaWhereContributor, { organizationId });
+    }
 
     const contributors = await this.client.contributor.findMany({
       where: { ...prismaWhereContributor, deletedAt: null },

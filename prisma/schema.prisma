@@ -60,6 +60,7 @@ model Profile {
   address     String?
   phone       String?
   image       String?
+  fiscalCode  String?
   color       String?
   url         String?
   description String?

@@ -1,28 +1,35 @@
 import {
+  Body,
   Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
   Param,
   ParseUUIDPipe,
-  Delete,
-  Res,
-  Get,
   Post,
-  Body,
-  HttpStatus,
-  HttpException,
-  UseGuards,
+  Query,
   Req,
+  Res,
+  UseGuards,
 } from '@nestjs/common';
 import { reply } from '../../app/utils/reply';
 
-import { ProfilesService } from '../profiles/profiles.service';
-import { ContributorsService } from './contributors.service';
-import { OrganizationsService } from '../organizations/organizations.service';
-import { JwtAuthGuard } from '../users/middleware';
-import { UsersService } from '../users/users.service';
+import { RequestPaginationDto } from '../../app/utils/pagination/request-pagination.dto';
+import {
+  PaginationType,
+  addPagination,
+} from '../../app/utils/pagination/with-pagination';
+import { SearchQueryDto } from '../../app/utils/search-query/search-query.dto';
 import {
   AddContributorUserDto,
   CreateOneContributorUserDto,
 } from '../contributors/contributors.dto';
+import { OrganizationsService } from '../organizations/organizations.service';
+import { ProfilesService } from '../profiles/profiles.service';
+import { JwtAuthGuard } from '../users/middleware';
+import { UsersService } from '../users/users.service';
+import { ContributorsService } from './contributors.service';
 
 @Controller('contributors')
 export class ContributorsController {
@@ -32,6 +39,29 @@ export class ContributorsController {
     private readonly contributorsService: ContributorsService,
     private readonly organizationsService: OrganizationsService,
   ) {}
+
+  @Get(`/`)
+  @UseGuards(JwtAuthGuard)
+  async findAll(
+    @Res() res,
+    @Req() req,
+    @Query() requestPaginationDto: RequestPaginationDto,
+    @Query() searchQuery: SearchQueryDto,
+  ) {
+    const { user } = req;
+    const { search } = searchQuery;
+
+    const { take, page, sort } = requestPaginationDto;
+    const pagination: PaginationType = addPagination({ page, take, sort });
+
+    const contributions = await this.contributorsService.findAll({
+      search,
+      pagination,
+      organizationId: user?.organizationId,
+    });
+
+    return reply({ res, results: contributions });
+  }
 
   /** Post one Contributors */
   @Post(`/`)
