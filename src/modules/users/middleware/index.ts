@@ -1,2 +1,2 @@
-export * from './jwt/jwt-auth.guard';
-export * from './jwt/jwt-auth.strategy';
+export * from './cookie/user-auth.guard';
+export * from './cookie/user-auth.strategy';

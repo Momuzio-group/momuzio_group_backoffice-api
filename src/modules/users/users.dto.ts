@@ -1,10 +1,11 @@
 import {
+  IsEmail,
+  IsNotEmpty,
   IsString,
   MaxLength,
-  IsNotEmpty,
-  IsEmail,
   MinLength,
 } from 'class-validator';
+import { Match } from './../../app/utils/decorators/match.decorator';
 
 export class RegisterUserDto {
   @IsNotEmpty()
@@ -40,4 +41,31 @@ export class CreateLoginUserDto {
   @MinLength(8)
   @IsString()
   password: string;
+}
+
+export class CreateOrUpdateResetPasswordDto {
+  @IsNotEmpty()
+  @IsString()
+  @MaxLength(100)
+  @IsEmail()
+  email: string;
+}
+
+export class UpdateResetPasswordUserDto {
+  @IsNotEmpty()
+  @MinLength(8)
+  @IsString()
+  password: string;
+
+  @IsString()
+  @MinLength(8)
+  @Match('password')
+  passwordConfirm: string;
+}
+
+export class TokenUserDto {
+  @IsNotEmpty()
+  @MinLength(6)
+  @IsString()
+  token: string;
 }

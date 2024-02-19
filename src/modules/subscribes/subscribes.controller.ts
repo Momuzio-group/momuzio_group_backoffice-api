@@ -7,7 +7,7 @@ import {
   PaginationType,
   addPagination,
 } from '../../app/utils/pagination/with-pagination';
-import { JwtAuthGuard } from '../users/middleware';
+import { UserAuthGuard } from '../users/middleware';
 import { SubscribesService } from './subscribes.service';
 
 @Controller('subscribes')
@@ -15,7 +15,7 @@ export class SubscribesController {
   constructor(private readonly subscribesService: SubscribesService) {}
 
   @Get(`/subscribers`)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(UserAuthGuard)
   async findFollowers(
     @Res() res,
     @Req() req,

@@ -25,7 +25,7 @@ import {
   PaginationType,
   addPagination,
 } from '../../app/utils/pagination/with-pagination';
-import { JwtAuthGuard } from '../users/middleware';
+import { UserAuthGuard } from '../users/middleware';
 import {
   CreateOrUpdateMembershipsDto,
   GetMembershipDto,
@@ -61,7 +61,7 @@ export class MembershipsController {
 
   /** Post one Memberships */
   @Post(`/`)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(UserAuthGuard)
   @UseInterceptors(AnyFilesInterceptor())
   async createOne(
     @Res() res,
@@ -86,7 +86,7 @@ export class MembershipsController {
 
   /** Post one Memberships */
   @Put(`/:membershipId`)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(UserAuthGuard)
   @UseInterceptors(AnyFilesInterceptor())
   async updateOne(
     @Res() res,
@@ -124,7 +124,7 @@ export class MembershipsController {
 
   /** Get one Memberships */
   @Get(`/show/:membershipId`)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(UserAuthGuard)
   async getOneByIdUser(
     @Res() res,
     @Req() req,
@@ -141,7 +141,7 @@ export class MembershipsController {
 
   /** Delete one Memberships */
   @Delete(`/delete/:membershipId`)
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(UserAuthGuard)
   async deleteOne(
     @Res() res,
     @Req() req,

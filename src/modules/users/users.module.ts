@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
-import { UsersAuthController } from './users.auth.controller';
+import { ContributorsService } from '../contributors/contributors.service';
+import { ContributorsUtil } from '../contributors/contributors.util';
 import { OrganizationsService } from '../organizations/organizations.service';
 import { ProfilesService } from '../profiles/profiles.service';
-import { ContributorsService } from '../contributors/contributors.service';
+import { UserAuthStrategy } from './middleware';
 import { CheckUserService } from './middleware/check-user.service';
-import { JwtAuthStrategy } from './middleware';
-import { ContributorsUtil } from '../contributors/contributors.util';
+import { UsersAuthController } from './users.auth.controller';
+import { UsersController } from './users.controller';
+import { UsersService } from './users.service';
 
 @Module({
   controllers: [UsersController, UsersAuthController],
@@ -16,7 +16,7 @@ import { ContributorsUtil } from '../contributors/contributors.util';
     OrganizationsService,
     ProfilesService,
     CheckUserService,
-    JwtAuthStrategy,
+    UserAuthStrategy,
     ContributorsUtil,
     ContributorsService,
   ],
